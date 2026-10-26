@@ -1,0 +1,73 @@
+{
+  "feature_columns": [
+    "Age",
+    "MonthlyIncome",
+    "DistanceFromHome",
+    "TotalWorkingYears",
+    "YearsAtCompany",
+    "YearsSinceLastPromotion",
+    "NumCompaniesWorked",
+    "JobLevel",
+    "StockOptionLevel",
+    "JobSatisfaction",
+    "EnvironmentSatisfaction",
+    "WorkLifeBalance",
+    "OverTime_No",
+    "OverTime_Yes",
+    "MaritalStatus_Divorced",
+    "MaritalStatus_Married",
+    "MaritalStatus_Single",
+    "BusinessTravel_Non-Travel",
+    "BusinessTravel_Travel_Frequently",
+    "BusinessTravel_Travel_Rarely"
+  ],
+  "numeric_cols": [
+    "Age",
+    "MonthlyIncome",
+    "DistanceFromHome",
+    "TotalWorkingYears",
+    "YearsAtCompany",
+    "YearsSinceLastPromotion",
+    "NumCompaniesWorked",
+    "JobLevel",
+    "StockOptionLevel",
+    "JobSatisfaction",
+    "EnvironmentSatisfaction",
+    "WorkLifeBalance"
+  ],
+  "categorical_cols": [
+    "OverTime",
+    "MaritalStatus",
+    "BusinessTravel"
+  ],
+  "threshold": 0.5,
+  "feature_means": {
+    "Age": -0.0,
+    "MonthlyIncome": -0.0,
+    "DistanceFromHome": -0.0,
+    "TotalWorkingYears": -0.0,
+    "YearsAtCompany": -0.0,
+    "YearsSinceLastPromotion": -0.0,
+    "NumCompaniesWorked": -0.0,
+    "JobLevel": 0.0,
+    "StockOptionLevel": -0.0,
+    "JobSatisfaction": 0.0,
+    "EnvironmentSatisfaction": 0.0,
+    "WorkLifeBalance": -0.0,
+    "OverTime_No": 0.710884,
+    "OverTime_Yes": 0.289116,
+    "MaritalStatus_Divorced": 0.223639,
+    "MaritalStatus_Married": 0.459184,
+    "MaritalStatus_Single": 0.317177,
+    "BusinessTravel_Non-Travel": 0.104592,
+    "BusinessTravel_Travel_Frequently": 0.191327,
+    "BusinessTravel_Travel_Rarely": 0.704082
+  },
+  "sklearn_version": "1.9.1",
+  "metrics_test": {
+    "precision": 0.4333,
+    "recall": 0.5532,
+    "f1": 0.486,
+    "auc": 0.7932
+  }
+}

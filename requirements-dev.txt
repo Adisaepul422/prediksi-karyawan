@@ -1,0 +1,6 @@
+# Dependensi untuk analisis & pelatihan model (lokal / Colab)
+-r requirements.txt
+imbalanced-learn>=0.12
+matplotlib>=3.8
+seaborn>=0.13
+jupyter

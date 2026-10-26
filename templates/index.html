@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prediksi Risiko Karyawan Resign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <h1>Prediksi risiko karyawan resign</h1>
+    <p>Masukkan data seorang karyawan untuk melihat peluang ia resign, berdasarkan model regresi logistik yang dilatih pada data HR.</p>
+  </header>
+
+  {% if load_error %}
+  <div class="notice" role="alert">{{ load_error }}</div>
+  {% endif %}
+
+  <main class="layout">
+    <form method="post" class="form" novalidate>
+      {% for group in groups %}
+      <fieldset>
+        <legend>{{ group.title }}</legend>
+        <div class="grid">
+          {% for f in group.fields %}
+          <div class="field{% if errors.get(f.name) %} has-error{% endif %}">
+            <label for="{{ f.name }}">{{ f.label }}</label>
+            {% if f.kind == 'select' %}
+            <select id="{{ f.name }}" name="{{ f.name }}">
+              {% for val, text in f.options %}
+              <option value="{{ val }}" {% if values[f.name] == val %}selected{% endif %}>{{ text }}</option>
+              {% endfor %}
+            </select>
+            {% else %}
+            <input id="{{ f.name }}" name="{{ f.name }}" type="number" inputmode="decimal"
+                   min="{{ f.min }}" max="{{ f.max }}" step="1" value="{{ values[f.name] }}">
+            {% endif %}
+            {% if errors.get(f.name) %}<p class="err">{{ errors[f.name] }}</p>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+      <button type="submit" {% if load_error %}disabled{% endif %}>Hitung risiko</button>
+    </form>
+
+    <aside class="result" aria-live="polite">
+      {% if result %}
+      <p class="verdict {{ 'risk' if result.at_risk else 'safe' }}">{{ result.label }}</p>
+      <p class="prob"><span>{{ result.percent }}</span>%</p>
+      <p class="caption">peluang karyawan ini resign</p>
+
+      <div class="gauge" role="img"
+           aria-label="Peluang resign {{ result.percent }} persen, ambang batas {{ result.threshold_percent }} persen">
+        <div class="fill {{ 'risk' if result.at_risk else 'safe' }}" style="width: {{ result.percent }}%"></div>
+        <div class="tick" style="left: {{ result.threshold_percent }}%"></div>
+      </div>
+      <div class="gauge-scale"><span>0%</span><span class="tick-label" style="left: {{ result.threshold_percent }}%">ambang {{ result.threshold_percent }}%</span><span>100%</span></div>
+
+      {% if result.drivers %}
+      <h2>Faktor yang menaikkan risiko</h2>
+      <ul class="drivers">
+        {% for d in result.drivers %}<li>{{ d.name }}</li>{% endfor %}
+      </ul>
+      {% else %}
+      <p class="muted">Tidak ada faktor yang menonjol menaikkan risiko.</p>
+      {% endif %}
+      {% else %}
+      <h2>Hasil prediksi</h2>
+      <p class="muted">Isi data karyawan di sebelah kiri, lalu pilih Hitung risiko.</p>
+      {% endif %}
+
+      <p class="disclaimer">Hasil ini alat bantu untuk memprioritaskan percakapan retensi, bukan dasar keputusan tunggal tentang karyawan.
+      {% if metrics %}Pada data uji, model mencapai recall {{ '%.0f'|format(metrics.recall * 100) }}% dan AUC {{ '%.2f'|format(metrics.auc) }}.{% endif %}</p>
+    </aside>
+  </main>
+</body>
+</html>
